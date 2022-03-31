@@ -1,51 +1,51 @@
-dim levelOne(10), levelTwo(10), levelthree(10), levelFour(10), randomWords(10)
-dim level, hits, scores, heard, jumped, player
+dim words(40), sorteados(10)
+dim level, hits, scores, heard, jumped, player, sorteado, sorteio_,n
 
 
 'Preenchendo arrays
-levelOne(1) = "ano"
-levelOne(2) = "cabo"
-levelOne(3) = "fita"
-levelOne(4) = "dia"
-levelOne(5) = "rei"
-levelOne(6) = "gato"
-levelOne(7) = "rato"
-levelOne(8) = "mosca"
-levelOne(9) = "tela"
-levelOne(10) = "laço"
+words(1) = "ano"
+words(2) = "cabo"
+words(3) = "fita"
+words(4) = "dia"
+words(5) = "rei"
+words(6) = "gato"
+words(7) = "rato"
+words(8) = "mosca"
+words(9) = "tela"
+words(10) = "laço"
 
-levelTwo(1) = "cachorro"
-levelTwo(2) = "mosquito"
-levelTwo(3) = "positivo"
-levelTwo(4) = "negativo"
-levelTwo(5) = "alface"
-levelTwo(6) = "morango"
-levelTwo(7) = "guitarra"
-levelTwo(8) = "gaveta"
-levelTwo(9) = "musgo"
-levelTwo(10) = "navegador"
+words(11) = "cachorro"
+words(12) = "mosquito"
+words(13) = "positivo"
+words(14) = "negativo"
+words(15) = "alface"
+words(16) = "morango"
+words(17) = "guitarra"
+words(18) = "gaveta"
+words(19) = "musgo"
+words(20) = "navegador"
 
-levelthree(1) = "pirata"
-levelthree(2) = "mulher"
-levelthree(3) = "homem"
-levelthree(4) = "sapato"
-levelthree(5) = "desenho"
-levelthree(6) = "chiclete"
-levelthree(7) = "pirulito"
-levelthree(8) = "festa"
-levelthree(9) = "regra"
-levelthree(10) = "paraclorobenzilpirrolidinonetilbenzimidazol"
+words(21) = "pirata"
+words(22) = "mulher"
+words(23) = "homem"
+words(24) = "sapato"
+words(25) = "desenho"
+words(26) = "chiclete"
+words(27) = "pirulito"
+words(28) = "festa"
+words(29) = "regra"
+words(30) = "paraclorobenzilpirrolidinonetilbenzimidazol"
 
-levelFour(1) = "admoesta"
-levelFour(2) = "fenecimento"
-levelFour(3) = "anticonstitucionalmente"
-levelFour(4) = "hexanitrodifenilamina"
-levelFour(5) = "meningoencefalomielite"
-levelFour(6) = "interconfessionalismo"
-levelFour(7) = "traquelatloidoccipital"
-levelFour(8) = "fotocromometalografia"
-levelFour(9) = "traquelatloidoccipital"
-levelFour(10) = "preterintencionalidade"
+words(31) = "admoesta"
+words(32) = "fenecimento"
+words(33) = "anticonstitucionalmente"
+words(34) = "hexanitrodifenilamina"
+words(35) = "meningoencefalomielite"
+words(36) = "interconfessionalismo"
+words(37) = "traquelatloidoccipital"
+words(38) = "fotocromometalografia"
+words(39) = "traquelatloidoccipital"
+words(40) = "preterintencionalidade"
 
 level = 1
 
@@ -62,6 +62,42 @@ sub carregar_voz()
 	audio.volume = 100
 	audio.rate = 2
 end sub
+
+sub rando()
+	randomize(second(time))
+	n=int(rnd * 10) + 20
+end sub
+
+sub ja_sorteado()
+	sorteado = 0
+	for i=1 to 10 step +1
+
+		if sorteados(i) = n then
+			i = 11
+			sorteado = 1
+		else
+			i=i+1
+		end if
+	next
+end sub
+sorteio_ = 1
+call sorteio
+sub sorteio()
+call rando
+msgbox(n)
+call ja_sorteado()
+if sorteado = 0 then
+	sorteados(sorteio_) = n
+	msgbox("ok")
+end if
+
+
+
+for i=1 to 10 step +1
+	msgbox(sorteados(i))
+next
+end sub
+
 
 
 
