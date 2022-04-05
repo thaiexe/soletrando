@@ -1,101 +1,167 @@
-dim words(40), sorteados(10)
-dim level, hits, scores, heard, jumped, player, sorteado, sorteio_,n
+dim palavras(40), sorteadas(5)
+dim audio, nivel, acertos, pontos, ouvir_, pulo, inc_nivel, sorteada, n, palavra
+dim resp
 
-
-'Preenchendo arrays
-words(1) = "ano"
-words(2) = "cabo"
-words(3) = "fita"
-words(4) = "dia"
-words(5) = "rei"
-words(6) = "gato"
-words(7) = "rato"
-words(8) = "mosca"
-words(9) = "tela"
-words(10) = "laço"
-
-words(11) = "cachorro"
-words(12) = "mosquito"
-words(13) = "positivo"
-words(14) = "negativo"
-words(15) = "alface"
-words(16) = "morango"
-words(17) = "guitarra"
-words(18) = "gaveta"
-words(19) = "musgo"
-words(20) = "navegador"
-
-words(21) = "pirata"
-words(22) = "mulher"
-words(23) = "homem"
-words(24) = "sapato"
-words(25) = "desenho"
-words(26) = "chiclete"
-words(27) = "pirulito"
-words(28) = "festa"
-words(29) = "regra"
-words(30) = "paraclorobenzilpirrolidinonetilbenzimidazol"
-
-words(31) = "admoesta"
-words(32) = "fenecimento"
-words(33) = "anticonstitucionalmente"
-words(34) = "hexanitrodifenilamina"
-words(35) = "meningoencefalomielite"
-words(36) = "interconfessionalismo"
-words(37) = "traquelatloidoccipital"
-words(38) = "fotocromometalografia"
-words(39) = "traquelatloidoccipital"
-words(40) = "preterintencionalidade"
-
-level = 1
-
-sub init_round()
-hits = 0
-scores = 0
-heard = 0
-jumped = 0
-end sub
-
-call carregar_voz
 sub carregar_voz()
-	set audio = createobject("SAPI.SPVOICE")
-	audio.volume = 100
-	audio.rate = 2
+	set audio=CreateObject("SAPI.SPVOICE")
+    audio.volume = 100
+    audio.rate = 2
+  
 end sub
 
-sub rando()
-	randomize(second(time))
-	n=int(rnd * 10) + 20
+sub carregar_palavras()
+palavras(1) = "ano"
+palavras(2) = "cabo"
+palavras(3) = "fita"
+palavras(4) = "dia"
+palavras(5) = "rei"
+palavras(6) = "gato"
+palavras(7) = "rato"
+palavras(8) = "mosca"
+palavras(9) = "tela"
+palavras(10) = "laï¿½o"
+
+palavras(11) = "cachorro"
+palavras(12) = "mosquito"
+palavras(13) = "positivo"
+palavras(14) = "negativo"
+palavras(15) = "alface"
+palavras(16) = "morango"
+palavras(17) = "guitarra"
+palavras(18) = "gaveta"
+palavras(19) = "musgo"
+palavras(20) = "navegador"
+
+palavras(21) = "pirata"
+palavras(22) = "mulher"
+palavras(23) = "homem"
+palavras(24) = "sapato"
+palavras(25) = "desenho"
+palavras(26) = "chiclete"
+palavras(27) = "pirulito"
+palavras(28) = "festa"
+palavras(29) = "regra"
+palavras(30) = "paraclorobenzilpirrolidinonetilbenzimidazol"
+
+palavras(31) = "admoesta"
+palavras(32) = "fenecimento"
+palavras(33) = "anticonstitucionalmente"
+palavras(34) = "hexanitrodifenilamina"
+palavras(35) = "meningoencefalomielite"
+palavras(36) = "interconfessionalismo"
+palavras(37) = "traquelatloidoccipital"
+palavras(38) = "fotocromometalografia"
+palavras(39) = "traquelatloidoccipital"
+palavras(40) = "preterintencionalidade"
 end sub
 
-sub ja_sorteado()
-	sorteado = 0
-	for i=1 to 10 step +1
+sub iniciar_rodada()
+acertos = 0
+ouvir_ = 0
+pulo = 0
+end sub
+sub sortear()
+	call incremento_nivel
+	for i=1 to 5 step +1
+		call sortear_palavra
+		sorteadas(i) = n
+	next 
+end sub
 
-		if sorteados(i) = n then
-			i = 11
-			sorteado = 1
+sub sortear_palavra()
+	sorteada = 1
+	While sorteada = 1
+		randomize(second(time))
+		n=int(rnd * 10) + inc_nivel 
+		call palavra_sorteada(n)
+	Wend
+end sub
+
+sub palavra_sorteada(n)
+	
+	for i=1 to 5 step +1
+		
+		if sorteadas(i) = n then
+			sorteada = 1
+			exit Sub
 		else
-			i=i+1
+			sorteada = 0
 		end if
 	next
 end sub
-sorteio_ = 1
-call sorteio
-sub sorteio()
-call rando
-msgbox(n)
-call ja_sorteado()
-if sorteado = 0 then
-	sorteados(sorteio_) = n
-	msgbox("ok")
-end if
 
+sub incremento_nivel()
+	select case nivel
+	case 1
+		inc_nivel = 1
+	case 2
+		inc_nivel = 11 
+	case 3 
+		inc_nivel = 21 
+	case else
+		inc_nivel = 31
+	end select
+end sub
 
+sub ouvir(palavra)
+    audio.speak(palavra)
+end sub
 
-for i=1 to 10 step +1
-	msgbox(sorteados(i))
-next
+sub encerrar()
+	resp = InputBox("Deseja abandonar o jogo?" + vbNewLine & _ 
+					"[S]Sim" + vbNewLine & _
+					"[N]Nï¿½o", "Atenï¿½ï¿½o")
+	if ucase(resp) = "S" then
+		wscript.quit
+	else 
+		call menu
+	end if
+end sub
+
+sub menu()
+resp = InputBox("*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=" + vbnewline & _
+				"[O]Ouvir a palavra novemente " + vbNewLine & _ 
+				"[P]Pular a palavra           " + vbNewLine & _ 
+				"[E]Encerrar o jogo           " + vbNewLine & _ 
+				"*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=", "SOLETRANDO")
+call valida_menu
+end sub
+
+sub valida_menu()
+	select case ucase(resp)
+	case "O"
+		if (ouvir_ = 0) then
+			ouvir_ = 1
+			call ouvir(palavra)
+			call menu
+		else
+			msgbox("Vocï¿½ jï¿½ ouviu novamente durante essa rodada")
+			call menu
+		end if
+	case "P"
+		if (pulo = 0) then
+			pulo = 1
+			msgbox("Vocï¿½ pulou uma palavra")
+		else
+			msgbox("Vocï¿½ jï¿½ pulou demais")
+		end if
+	case "E"
+		call encerrar()
+	end select
+end sub
+
+call jogar
+sub jogar()
+	call carregar_voz
+	call carregar_palavras
+	call iniciar_rodada
+	nivel = 1
+	call sortear
+	for i=1 to 5 step +1
+		palavra = palavras(sorteadas(i))
+		call ouvir(palavra)
+		call menu
+	next 
 end sub
 
 
