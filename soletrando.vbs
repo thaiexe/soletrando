@@ -19,7 +19,7 @@ palavras(6) = "gato"
 palavras(7) = "rato"
 palavras(8) = "mosca"
 palavras(9) = "tela"
-palavras(10) = "la�o"
+palavras(10) = "teia"
 
 palavras(11) = "cachorro"
 palavras(12) = "mosquito"
@@ -110,7 +110,7 @@ end sub
 sub encerrar()
 	resp = InputBox("Deseja abandonar o jogo?" + vbNewLine & _ 
 					"[S]Sim" + vbNewLine & _
-					"[N]N�o", "Aten��o")
+					"[N]Nao", "Atencao")
 	if ucase(resp) = "S" then
 		wscript.quit
 	else 
@@ -120,7 +120,7 @@ end sub
 
 sub menu()
 resp = InputBox("*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=" + vbnewline & _
-				"[O]Ouvir a palavra novemente " + vbNewLine & _ 
+				"[O]Ouvir a palavra novamente " + vbNewLine & _ 
 				"[P]Pular a palavra           " + vbNewLine & _ 
 				"[E]Encerrar o jogo           " + vbNewLine & _ 
 				"*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=", "SOLETRANDO")
@@ -135,15 +135,16 @@ sub valida_menu()
 			call ouvir(palavra)
 			call menu
 		else
-			msgbox("Voc� j� ouviu novamente durante essa rodada")
+			msgbox("Voce ja ouviu novamente durante essa rodada")
 			call menu
 		end if
 	case "P"
 		if (pulo = 0) then
 			pulo = 1
-			msgbox("Voc� pulou uma palavra")
+			msgbox("Voce pulou uma palavra")
 		else
-			msgbox("Voc� j� pulou demais")
+			msgbox("Voce ja pulou demais")
+			call menu
 		end if
 	case "E"
 		call encerrar()
@@ -163,7 +164,3 @@ sub jogar()
 		call menu
 	next 
 end sub
-
-
-
-
