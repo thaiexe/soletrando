@@ -110,7 +110,7 @@ end sub
 sub encerrar()
 	resp = InputBox("Deseja abandonar o jogo?" + vbNewLine & _ 
 					"[S]Sim" + vbNewLine & _
-					"[N]Nï¿½o", "Atenï¿½ï¿½o")
+					"[N]Não", "Atenção")
 	if ucase(resp) = "S" then
 		wscript.quit
 	else 
@@ -135,7 +135,7 @@ sub valida_menu()
 			call ouvir(palavra)
 			call menu
 		else
-			msgbox("Vocï¿½ jï¿½ ouviu novamente durante essa rodada")
+			msgbox("Você já ouviu novamente durante essa rodada")
 			call menu
 		end if
 	case "P"
@@ -147,6 +147,8 @@ sub valida_menu()
 		end if
 	case "E"
 		call encerrar()
+	case else
+		call validar_resposta
 	end select
 end sub
 
