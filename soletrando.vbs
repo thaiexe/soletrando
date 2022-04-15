@@ -1,10 +1,17 @@
 dim palavras(40), sorteadas(5)
-dim audio, nivel, acertos, pontos, ouvir_, pulo, inc_nivel, sorteada, n, palavra, n_palavra, palavra_pulada, i_
+dim audio, nivel, acertos, pontos
+dim ouvir_, pulo, inc_nivel, sorteada, n
+dim palavra, n_palavra, palavra_pulada, i_
 dim resp, nome
+pontos = 0
 
 sub nome_jogador()
     nome = InputBox ("Bem vindo ao Soletrando de S.I." + vbNewLine & _ 
 					"   Qual e o seu nome ?")
+	if nome = vbNullString then
+        msgbox("Campo Vazio!")
+        call nome_jogador
+    end if
 end sub
 
 sub carregar_voz()
@@ -61,19 +68,18 @@ sub carregar_palavras()
 end sub
 
 sub ganhou()
-    dim a
-    a = msgbox ("VC GANHOU "& nome &"" + vbnewline &_
-                "Sua Pontuacao: "& pontos &"" + vbnewline &_
-                "deseja jogar outra vez ?", vbYesNo, "SOLETRANDO")
-    if a = vbyes then
-        call jogar_novamente
-    else 
-        wscript.quit
-    end if
+    msgbox ("Voce ganhou "& nome &"" + vbnewline &_
+            "Sua Pontuacao: "& pontos &"")
+	call jogar_novamente
+end sub
+
+sub perdeu()
+    msgbox ("Voce perdeu "& nome &"" + vbnewline &_
+            "Sua Pontuacao: "& pontos &"")
+	call jogar_novamente
 end sub
 
 sub iniciar_rodada()
-    call nome_jogador
 	ouvir_ = 0
 	pulo = 0
 	palavra_pulada = 0
@@ -97,9 +103,7 @@ sub sortear_palavra()
 end sub
 
 sub palavra_sorteada(n)
-	
 	for i=1 to 5 step +1
-		
 		if sorteadas(i) = n then
 			sorteada = 1
 			exit Sub
@@ -121,6 +125,7 @@ sub incremento_nivel()
 		inc_nivel = 31
 	end select
 end sub
+
 sub incremento_pontos()
 	select case nivel
 	case 1
@@ -137,6 +142,7 @@ sub incremento_pontos()
 		pontos = n_palavra * 1000000
 	end select
 end sub
+
 sub ouvir(palavra)
     audio.speak(palavra)
 end sub
@@ -156,7 +162,10 @@ sub jogar_novamente()
 	resp = InputBox("Deseja jogar novamente?" + vbNewLine & _ 
 					"[S]Sim" + vbNewLine & _
 					"[N]Nao", "Atencao")
-	if ucase(resp) = "S" then
+	if resp = vbNullString then
+        msgbox("Campo Vazio")
+        call jogar_novamente
+	elseif ucase(resp) = "S" then
 		call jogar
 	else 
 		wscript.quit
@@ -182,10 +191,9 @@ sub validar_resposta(resp,palavra)
 	
 	if lcase(resp) = palavra then
 		call incremento_pontos
-		msgbox("vc acertou "& pontos &"" ) 
+		msgbox("voce acertou "& pontos &"" ) 
 	else
-		msgbox("vc perdeu")
-		msgbox("vc acertou "& pontos &"" ) 
+		call perdeu()
 		call jogar_novamente
 	end if
 end sub
@@ -214,7 +222,7 @@ sub valida_menu(resp, palavra)
 				call menu(palavra)
 			end if
 		else
-			msgbox("vc nao pode pular no ultimo nivel")
+			msgbox("Voce nao pode pular no ultimo nivel")
 			call menu(palavra)
 		end if
 	case "E"
@@ -226,7 +234,7 @@ end sub
 
 call jogar
 sub jogar()
-
+    call nome_jogador
 	call carregar_voz
 	call carregar_palavras
 	call iniciar_rodada
